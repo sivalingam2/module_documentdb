@@ -27,7 +27,7 @@ resource "aws_security_group" "main" {
 
 }
 resource "aws_docdb_cluster_parameter_group" "main" {
-  family      = "docdb4.0"
+  family      = var.engine_family
   name        = "${local.name_prefix}-pg"
   description = "${local.name_prefix}-sg"
   tags = merge(local.tags, {Name = "${local.name_prefix}-pg" })
@@ -35,7 +35,7 @@ resource "aws_docdb_cluster_parameter_group" "main" {
 }
 resource "aws_docdb_cluster" "docdb" {
   cluster_identifier      = "${local.name_prefix}-cluster"
-  engine                  = "docdb"
+  engine                  = var.engine
   master_username         = data.aws_ssm_parameter.master_username.value
   master_password         = data.aws_ssm_parameter.master_password.value
   backup_retention_period = var.backup_retention_period
